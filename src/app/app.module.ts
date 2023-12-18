@@ -31,7 +31,7 @@ export class AppModule {
   // ngDoBootstrap() {}
 
   constructor(private injector: Injector) {
-    const componentElement = createCustomElement(AppComponent, {
+    const componentElement = createCustomElement(AgentShareComponent, {
       injector,
     });
     customElements.define('app-agent-co-browse', componentElement);
