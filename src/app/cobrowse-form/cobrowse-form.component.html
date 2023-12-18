@@ -1,0 +1,176 @@
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+  crossorigin="anonymous"
+/>
+
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+<div class="middle" style=" display: flex; align-items: center; justify-content: center; ">
+   
+
+        <div class="main" style="overflow-x: hidden; margin:2rem; width: 100%; max-width: 800px;" >
+            <div style="display: flex; flex-flow: column;">
+              <h5 class="h5 text-start">Select form</h5>
+          
+              <div class="row">
+                <div class="col-5" style=" width: 70%;
+                padding: 1rem;">
+                  <div class="select-url">
+                    <select
+                      class="form-select"
+                      style="width: 100%"
+                      #ref
+                      (change)="getSelectedValue(ref.value)"
+                    >
+                      <option value=""></option>
+                      <option value="Update mobile number">Update mobile number</option>
+                      <option value="Update address details">
+                        Update address details
+                      </option>
+                      <option value="Update email address">Update email address</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-6" style=" width: 30%;
+                text-align: right;
+                padding: 0.5rem;">
+                  <a
+                    (click)="goToLink()"
+                    style="
+                      margin: 7px;
+                      text-decoration: none !important;
+                      background-color: #cce5ff;
+                    "
+                    class="btn"
+                  >
+                    <svg
+                      width="13"
+                      aria-hidden="true"
+                      focusable="false"
+                      data-prefix="far"
+                      data-icon="paper-plane"
+                      class="svg-inline--fa fa-paper-plane _Icon_1n7rb_11"
+                      role="img"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 512 512"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M501.6 4.186c-7.594-5.156-17.41-5.594-25.44-1.063L12.12 267.1C4.184 271.7-.5037 280.3 .0431 289.4c.5469 9.125 6.234 17.16 14.66 20.69l153.3 64.38v113.5c0 8.781 4.797 16.84 12.5 21.06C184.1 511 188 512 191.1 512c4.516 0 9.038-1.281 12.99-3.812l111.2-71.46l98.56 41.4c2.984 1.25 6.141 1.875 9.297 1.875c4.078 0 8.141-1.031 11.78-3.094c6.453-3.625 10.88-10.06 11.95-17.38l64-432C513.1 18.44 509.1 9.373 501.6 4.186zM369.3 119.2l-187.1 208.9L78.23 284.7L369.3 119.2zM215.1 444v-49.36l46.45 19.51L215.1 444zM404.8 421.9l-176.6-74.19l224.6-249.5L404.8 421.9z"
+                      ></path>
+                    </svg>
+                    View Form</a
+                  >
+                </div>
+              </div>
+          
+              <div class="alert alert-primary mt-4" style="width: 100% ;  padding: 0.6rem 1rem;" role="alert">
+                <p style="margin: 0;">URL: {{ urlname }}</p>
+                <p style="margin: 0;">Description: {{ description }}</p>
+              </div>
+        <!-- <div class="audioo" style="display: flex;align-items: center; justify-content: center;">
+            <audio controls style="text-align: center;">
+                <source src="https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+              </audio>
+        </div> -->
+              
+        
+            </div>
+            <div class="anchor-links" style="display: flex;align-items: center; justify-content: space-between; margin: 1.5rem 0;"  >
+                <a
+                (click)="sendCobrowseUrlToCustomer()"
+                style="
+                  margin: 0;
+                  text-decoration: none !important;
+                  background-color: #cce5ff;
+                  width: 48%;
+                "
+                class="btn"
+              >
+                <svg
+                  width="13"
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="far"
+                  data-icon="paper-plane"
+                  class="svg-inline--fa fa-paper-plane _Icon_1n7rb_11"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M501.6 4.186c-7.594-5.156-17.41-5.594-25.44-1.063L12.12 267.1C4.184 271.7-.5037 280.3 .0431 289.4c.5469 9.125 6.234 17.16 14.66 20.69l153.3 64.38v113.5c0 8.781 4.797 16.84 12.5 21.06C184.1 511 188 512 191.1 512c4.516 0 9.038-1.281 12.99-3.812l111.2-71.46l98.56 41.4c2.984 1.25 6.141 1.875 9.297 1.875c4.078 0 8.141-1.031 11.78-3.094c6.453-3.625 10.88-10.06 11.95-17.38l64-432C513.1 18.44 509.1 9.373 501.6 4.186zM369.3 119.2l-187.1 208.9L78.23 284.7L369.3 119.2zM215.1 444v-49.36l46.45 19.51L215.1 444zM404.8 421.9l-176.6-74.19l224.6-249.5L404.8 421.9z"
+                  ></path>
+                </svg>
+                Send Co-browse URL</a
+              >
+              <a
+                style="
+                  margin: 0;
+                  text-decoration: none !important;
+                  background-color: #cce5ff;
+                  width: 48%;
+                "
+                class="btn"
+              >
+                <svg
+                  width="13"
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="far"
+                  data-icon="paper-plane"
+                  class="svg-inline--fa fa-paper-plane _Icon_1n7rb_11"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M501.6 4.186c-7.594-5.156-17.41-5.594-25.44-1.063L12.12 267.1C4.184 271.7-.5037 280.3 .0431 289.4c.5469 9.125 6.234 17.16 14.66 20.69l153.3 64.38v113.5c0 8.781 4.797 16.84 12.5 21.06C184.1 511 188 512 191.1 512c4.516 0 9.038-1.281 12.99-3.812l111.2-71.46l98.56 41.4c2.984 1.25 6.141 1.875 9.297 1.875c4.078 0 8.141-1.031 11.78-3.094c6.453-3.625 10.88-10.06 11.95-17.38l64-432C513.1 18.44 509.1 9.373 501.6 4.186zM369.3 119.2l-187.1 208.9L78.23 284.7L369.3 119.2zM215.1 444v-49.36l46.45 19.51L215.1 444zM404.8 421.9l-176.6-74.19l224.6-249.5L404.8 421.9z"
+                  ></path>
+                </svg>
+                Send Co-browse URL SMS</a
+              >
+              <!-- <a
+                (click)="createCobrowseURL(session)"
+                style="
+                  margin: 7px;
+                  text-decoration: none !important;
+                  background-color: #cce5ff;
+                "
+                class="btn"
+              >
+                <svg
+                  width="13"
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="far"
+                  data-icon="paper-plane"
+                  class="svg-inline--fa fa-paper-plane _Icon_1n7rb_11"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M501.6 4.186c-7.594-5.156-17.41-5.594-25.44-1.063L12.12 267.1C4.184 271.7-.5037 280.3 .0431 289.4c.5469 9.125 6.234 17.16 14.66 20.69l153.3 64.38v113.5c0 8.781 4.797 16.84 12.5 21.06C184.1 511 188 512 191.1 512c4.516 0 9.038-1.281 12.99-3.812l111.2-71.46l98.56 41.4c2.984 1.25 6.141 1.875 9.297 1.875c4.078 0 8.141-1.031 11.78-3.094c6.453-3.625 10.88-10.06 11.95-17.38l64-432C513.1 18.44 509.1 9.373 501.6 4.186zM369.3 119.2l-187.1 208.9L78.23 284.7L369.3 119.2zM215.1 444v-49.36l46.45 19.51L215.1 444zM404.8 421.9l-176.6-74.19l224.6-249.5L404.8 421.9z"
+                  ></path>
+                </svg>
+                Share My Screen</a
+              > -->
+            </div>
+          
+            
+            <!-- <a class="btn btn-primary"  routerLink="Costomer">Coustomer</a> -->
+        
+          
+          </div>
+    
+</div>
+
