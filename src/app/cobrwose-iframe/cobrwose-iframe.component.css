@@ -1,4 +1,4 @@
-.CustomAgentUIExample {
+/* .CustomAgentUIExample {
     position: relative;
     background: black;
     color: white;
@@ -6,7 +6,6 @@
     display: flex;
     flex: 1;
     width: 100% !important;
-    /* height: 100% !important; */
     overflow: hidden;
     height: 100vh;
   }
@@ -74,7 +73,6 @@
     justify-content: center !important;
     align-items: center !important;
     padding-bottom: 20px !important;
-    /* margin-top: 20px !important; */
   }
   
   .CustomAgentUIExample .btn {
@@ -193,4 +191,109 @@
   }
   .agent-session{
     height: 100vh;
-  }
+  } */
+
+.fk {
+  border-radius: 0 !important;
+}
+.CustomAgentUIExample .agent-controls {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding-bottom: 20px !important;
+  /* margin-top: 20px !important; */
+}
+
+.CustomAgentUIExample .btn {
+  padding: 15px 20px;
+  background: rgb(51, 51, 54);
+  font-size: 0.85em;
+  color: white;
+  cursor: pointer;
+  border-left: 1px solid rgb(70, 70, 73);
+}
+
+.CustomAgentUIExample .btn:hover {
+  opacity: 0.95;
+}
+
+.CustomAgentUIExample .btn-left-most {
+  border-radius: 10px 0px 0 10px;
+  border-left: 0px none;
+}
+
+.CustomAgentUIExample .btn-right-most {
+  border-radius: 0 10px 10px 0;
+}
+
+.CustomAgentUIExample .btn-selected {
+  background: rgb(26, 26, 28);
+}
+
+.CustomAgentUIExample .btn-end {
+  background: rgb(196, 64, 77);
+}
+
+.CustomAgentUIExample .full-device-on {
+  background: rgb(45, 161, 37);
+}
+
+.CustomAgentUIExample .timer {
+  color: white !important;
+  background: rgb(51, 51, 54) !important;
+  width: 60px !important;
+  height: 30px !important;
+  border-radius: 20px !important;
+  margin-right: 10px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  font-size: 12px !important;
+  font-weight: bold !important;
+}
+.panel {
+  background-color: #ffffff;
+  width: 80%;
+  max-width: 700px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#present-url {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#share-button,
+#end-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#share-button:hover,
+#end-button:hover {
+  background-color: #0056b3;
+}
+
+#preview {
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
+  overflow: hidden;
+  display: none;
+  border: 1px solid #ccc;
+}
