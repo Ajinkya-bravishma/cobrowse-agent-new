@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production --output-hashing none && node concatenate.js",
     "build:dev": "ng build --watch",
     "build:elements": "ng build --configuration production --output-hashing none && node concatenate.js",
     "watch": "ng build --watch --configuration development",

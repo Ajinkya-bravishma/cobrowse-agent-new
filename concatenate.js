@@ -19,6 +19,11 @@ const concat = require("concat");
     "./dist/cobrowse-widget/styles.css",
     "./dist/cobrowse-widget/elements/styles.css"
   );
+
+  await fs.copyFile(
+    './web.config',
+    "./dist/cobrowse-widget/web.config"
+  );
 })();
 
 // testing with old widget
