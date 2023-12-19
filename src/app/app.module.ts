@@ -17,7 +17,7 @@ import { IconModule } from './icon/icon.module';
   imports: [BrowserModule,ReactiveFormsModule,FormsModule,IconModule],
   providers: [],
 
-  // bootstrap: [AppComponent],
+  bootstrap: [AppComponent],
   entryComponents: [AgentShareComponent],
 })
 export class AppModule {
