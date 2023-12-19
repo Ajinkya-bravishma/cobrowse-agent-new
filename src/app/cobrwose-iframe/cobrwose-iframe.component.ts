@@ -10,7 +10,7 @@ import {
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import CobrowseAPI from 'cobrowse-agent-sdk';
+// import CobrowseAPI from 'cobrowse-agent-sdk';
 import config from '../utils/config';
 
 @Component({
@@ -148,7 +148,9 @@ export class COBrwoseIframeComponent implements OnInit {
   url: string = config.cobrowseDashboardUrl;
   isyes!: boolean;
   urlSafe!: SafeResourceUrl;
-  cobrowse = new CobrowseAPI();
+  // cobrowse = new CobrowseAPI();
+  cobrowse:any;
+  CobrowseAPI:any
   CobrowseIO: any;
   frameEl = document.getElementById('myIframe');
   session: any;
@@ -170,6 +172,10 @@ export class COBrwoseIframeComponent implements OnInit {
 
   context: any = null;
   ngOnInit() {
+
+    this.CobrowseAPI=(<any>window)?.CobrowseAPI;
+    this.cobrowse=new this.CobrowseAPI()
+    
     // this.generateViewerJWT(this.licenseKey,this.sessionID);
     console.log('called');
 
@@ -200,7 +206,7 @@ export class COBrwoseIframeComponent implements OnInit {
       console.log('CTX : ', ctx);
       (window as any).cobrowse_ctx = ctx;
       // window.cobrowse_ctx = ctx;
-      ctx.on('session.updated', (session) => {
+      ctx.on('session.updated', (session:any) => {
         // update the component session state
         // setSession(session.toJSON());
         this.session = session.toJSON();
@@ -210,10 +216,10 @@ export class COBrwoseIframeComponent implements OnInit {
           this.context = null;
         }
       });
-      ctx.on('screen.updated', (info) => {
+      ctx.on('screen.updated', (info:any) => {
         this.screenInfo = info;
       });
-      ctx.on('error', (err) => {
+      ctx.on('error', (err:any) => {
         console.log(err);
       });
       this.context = ctx;

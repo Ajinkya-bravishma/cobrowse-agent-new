@@ -1,10 +1,10 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import CobrowseAPI from 'cobrowse-agent-sdk';
+// import CobrowseAPI from 'cobrowse-agent-sdk';
 import * as jose from 'jose';
 import config from '../utils/config';
 declare var require: any;
-const CobrowseIO = require('cobrowse-sdk-js');
+// const CobrowseIO = require('cobrowse-sdk-js');
 
 
 
@@ -16,8 +16,8 @@ const CobrowseIO = require('cobrowse-sdk-js');
   encapsulation: ViewEncapsulation.Emulated,
 })
 export class AgentShareComponent {
-  cobrowse = new CobrowseAPI();
-  // CobrowseIO: any;
+  // cobrowse = new CobrowseAPI();
+  CobrowseIO: any;
   frameEl = document.getElementById('myIframe');
   selectedTool: string = 'laser';
   jwtToken = config.jwtToken;
@@ -31,7 +31,9 @@ export class AgentShareComponent {
   //adding for agent preview
   licenseKey = config.license;
   agentToken =this.jwtToken;
-  cobrowseAgent = new CobrowseAPI(this.agentToken);
+  // cobrowseAgent = new CobrowseAPI(this.agentToken);
+  CobrowseAPI:any;
+  cobrowseAgent:any;
   require: any;
 
   pkcs8 =config.pkcs8;
@@ -39,6 +41,11 @@ export class AgentShareComponent {
   public isEnd: boolean = false;
 
   ngOnInit() {
+    this.CobrowseAPI=(<any>window)?.CobrowseAPI;
+    this.CobrowseIO=(<any>window)?.CobrowseIO;
+    
+    this.cobrowseAgent=new this.CobrowseAPI(this.agentToken)
+
     this.createPresentSession();
   }
 
@@ -111,18 +118,18 @@ export class AgentShareComponent {
       audio: false,
     });
 
-    await CobrowseIO.client(); // client
+    await this.CobrowseIO.client(); // client
 
-    CobrowseIO.license = this.licenseKey;
-    CobrowseIO.redactedViews = ['.container'];
-    CobrowseIO.capabilities = ['full_device'];
-    CobrowseIO.showSessionControls = () => {};
-    CobrowseIO.hideSessionControls = () => {};
-    CobrowseIO.confirmSession = async () => true;
-    CobrowseIO.confirmFullDevice = async () => media;
-    CobrowseIO.confirmRemoteControl = async () => false;
+    this.CobrowseIO.license = this.licenseKey;
+    this.CobrowseIO.redactedViews = ['.container'];
+    this.CobrowseIO.capabilities = ['full_device'];
+    this.CobrowseIO.showSessionControls = () => {};
+    this.CobrowseIO.hideSessionControls = () => {};
+    this.CobrowseIO.confirmSession = async () => true;
+    this.CobrowseIO.confirmFullDevice = async () => media;
+    this.CobrowseIO.confirmRemoteControl = async () => false;
 
-    CobrowseIO.on('session.updated', (presentSession: any) => {
+    this.CobrowseIO.on('session.updated', (presentSession: any) => {
       if (presentSession.isActive()) {
         this.isShareScreen = false;
         this.isEnd = true;
@@ -133,22 +140,22 @@ export class AgentShareComponent {
       }
     });
 
-    CobrowseIO.on('session.ended', async (presentSession: any) => {
+    this.CobrowseIO.on('session.ended', async (presentSession: any) => {
       if (media) media.getTracks().forEach((track) => track.stop());
       this.resetPresentSession();
     });
 
-    await CobrowseIO.start({
+    await this.CobrowseIO.start({
       allowIFrameStart: true,
       register: false,
     });
 
     // Use the Client SDK to join the session
-    await CobrowseIO.getSession(this.session.id);
+    await this.CobrowseIO.getSession(this.session.id);
   };
 
   resetPresentSession = async () => {
-    await CobrowseIO.stop();
+    await this.CobrowseIO.stop();
     this.isShareScreen = true;
     this.isEnd = false;
 

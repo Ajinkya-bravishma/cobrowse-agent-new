@@ -10,7 +10,7 @@ import {
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import CobrowseAPI from 'cobrowse-agent-sdk';
+// import CobrowseAPI from 'cobrowse-agent-sdk';
 import config from '../utils/config';
 
 @Component({
@@ -39,7 +39,7 @@ export class CobrowseFormComponent implements OnInit {
   url: string = config.cobrowseDashboardUrl;
   isyes!: boolean;
   urlSafe!: SafeResourceUrl;
-  cobrowse = new CobrowseAPI();
+  // cobrowse = new CobrowseAPI();
   CobrowseIO: any;
   frameEl = document.getElementById('myIframe');
   session: any;
