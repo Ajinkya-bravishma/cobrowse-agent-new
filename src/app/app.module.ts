@@ -10,12 +10,13 @@ import { COBrwoseIframeComponent } from './cobrwose-iframe/cobrwose-iframe.compo
 import { CobrowseFormComponent } from './cobrowse-form/cobrowse-form.component';
 
 import { IconModule } from './icon/icon.module';
+import { CobrowseService } from './cobrowse.service';
 
 
 @NgModule({
   declarations: [AppComponent, AgentShareComponent, COBrwoseIframeComponent, CobrowseFormComponent],
   imports: [BrowserModule,ReactiveFormsModule,FormsModule,IconModule],
-  providers: [],
+  providers: [CobrowseService],
 
   bootstrap: [AppComponent],
   entryComponents: [AgentShareComponent],

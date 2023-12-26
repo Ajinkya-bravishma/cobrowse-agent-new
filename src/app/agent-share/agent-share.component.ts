@@ -1,13 +1,11 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, Renderer2, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 // import CobrowseAPI from 'cobrowse-agent-sdk';
 import * as jose from 'jose';
 import config from '../utils/config';
 declare var require: any;
 // const CobrowseIO = require('cobrowse-sdk-js');
-
-
-
+import { CobrowseService } from '../cobrowse.service';
 
 @Component({
   selector: 'app-agent-share',
@@ -30,35 +28,95 @@ export class AgentShareComponent {
   sessionID: any;
   //adding for agent preview
   licenseKey = config.license;
-  agentToken =this.jwtToken;
+  agentToken = this.jwtToken;
   // cobrowseAgent = new CobrowseAPI(this.agentToken);
-  CobrowseAPI:any;
-  cobrowseAgent:any;
+  CobrowseAPI: any;
+  cobrowseAgent: any;
   require: any;
 
-  pkcs8 =config.pkcs8;
+  pkcs8 = config.pkcs8;
   public isShareScreen: boolean = true;
   public isEnd: boolean = false;
 
-  ngOnInit() {
-    this.CobrowseAPI=(<any>window)?.CobrowseAPI;
-    this.CobrowseIO=(<any>window)?.CobrowseIO;
-    
-    this.cobrowseAgent=new this.CobrowseAPI(this.agentToken)
-
+  async ngOnInit() {
+    await this.CobrowseService.loadCobrowseScript();
     this.createPresentSession();
-  }
 
-  constructor(private formBuilder: FormBuilder) {
+    this.CobrowseIO = this.CobrowseService.CobrowseIO;
+    this.CobrowseAPI = this.CobrowseService.CobrowseAPI;
+
+    // this.CobrowseAPI=(<any>window)?.CobrowseAPI;
+    // this.CobrowseIO=(<any>window)?.CobrowseIO;
+
+    // this.cobrowseAgent=new this.CobrowseAPI(this.agentToken)
+  }
+  // ngAfterViewInit(){
+  //   this.createPresentSession();
+  // }
+
+  constructor(
+    private formBuilder: FormBuilder,
+    //  private renderer: Renderer2,
+    private CobrowseService: CobrowseService
+  ) {
     this.suggestionForm = this.formBuilder.group({
       presentURL: [''],
     });
   }
 
+  // private loadCobrowseScript() {
+  //   const cobroScr = this.renderer.createElement('script');
+  //   const coBroAgScr = this.renderer.createElement('script');
+  //   coBroAgScr.src =
+  //     'https://unpkg.com/cobrowse-agent-sdk@1.6.0/dist/umd-browser/cobrowse-agent-sdk.js';
+  //   cobroScr.src = 'https://js.cobrowse.io/CobrowseIO.js';
+
+  //   let a = new Promise((resolve, reject) => {
+  //     cobroScr.onload = () => resolve(true);
+  //   });
+  //   let b = new Promise((resolve, reject) => {
+  //     coBroAgScr.onload = () => resolve(true);
+  //   });
+
+  //   Promise.all([a, b])
+  //     .then((suc) => {
+  //       this.initializeCobrowse();
+  //       console.log('scripts loaded successfully');
+  //     })
+  //     .catch((err) => console.log('scripts loaded unsuccessfully'));
+
+  //   document.head.appendChild(cobroScr);
+  //   document.head.appendChild(coBroAgScr);
+
+  //   // this.renderer.appendChild(
+  //   //   this.renderer.selectRootElement('app-agent-share'),
+  //   //   cobroScr
+  //   // );
+  //   // this.renderer.appendChild(
+  //   //   this.renderer.selectRootElement('app-agent-share'),
+  //   //   coBroAgScr
+  //   // );
+  // }
+  // initializeCobrowse() {
+  //   this.CobrowseAPI = (<any>window)?.CobrowseAPI;
+  //   this.CobrowseIO = (<any>window)?.CobrowseIO;
+
+  //   console.log('this. cobro2=> ', this.CobrowseAPI);
+
+  //   this.cobrowseAgent = new this.CobrowseAPI(this.agentToken);
+
+  //   this.createPresentSession();
+  // }
+
+  // private loadScript(scriptElement:HTMLScriptElement):Promise<void>{
+  //   return new Promise((resolve,reject))
+  // }
+
   //**** agent screen sharing ****//
 
   createPresentSession = async () => {
-    this.session = await this.cobrowseAgent.sessions.create({
+    console.log('wassup');
+    this.session = await this.CobrowseService.cobrowseAgent.sessions.create({
       full_device: 'requested',
     });
     // console.log("session:",this.session);
@@ -108,6 +166,8 @@ export class AgentShareComponent {
   };
 
   startPresentSession = async () => {
+    console.log('cobroio==> ', this.CobrowseIO);
+    console.log('CobrowseAPI==> ', this.CobrowseAPI);
     const media = await navigator.mediaDevices.getDisplayMedia({
       video: {
         // cursor: 'always',

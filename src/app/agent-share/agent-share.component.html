@@ -1,40 +1,47 @@
 <app-cobrwose-iframe />
 <app-cobrowse-form></app-cobrowse-form>
 
-<div class="agent-container" style="display: flex; align-items: center; justify-content: center;">
-  <form class="form-horizontal" [formGroup]="suggestionForm" style="display: flex; align-items: center; justify-content: center; width: 100%;">
-        <div class="form-group panel">
-          <div class="col-md-12">
-            <input
-              type="text"
-              class="form-control"
-              name="presentURL"
-              id="presentURL"
-              formControlName="presentURL"
-            
-        
-             
-            />
-          </div>
-          <br />
-          <button
-            type="button"
-            id="share-button"
-            (click)="startPresentSession()"
-            *ngIf="isShareScreen"
-          >
-            Share my Desktop
-          </button>
-          <button
-            id="end-button"
-            type="button"
-            (click)="resetPresentSession()"
-            *ngIf="isEnd"
-          >
-            End present session
-          </button>
-        </div>
-      </form>
-      
+<div
+  class="agent-container"
+  style="display: flex; align-items: center; justify-content: center"
+>
+  <form
+    class="form-horizontal"
+    [formGroup]="suggestionForm"
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    "
+  >
+    <div class="form-group panel">
+      <div class="col-md-12">
+        <input
+          type="text"
+          class="form-control"
+          name="presentURL"
+          id="presentURL"
+          formControlName="presentURL"
+        />
+      </div>
+      <br />
+      <button
+        type="button"
+        id="share-button"
+        (click)="startPresentSession()"
+        *ngIf="isShareScreen"
+      >
+        Share my Desktop
+      </button>
+      <button
+        id="end-button"
+        type="button"
+        (click)="resetPresentSession()"
+        *ngIf="isEnd"
+      >
+        End present session
+      </button>
+    </div>
+  </form>
 </div>
-
