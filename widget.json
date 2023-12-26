@@ -1,0 +1,14 @@
+{
+  "name": "Agent Cobrowsing Angular Widget",
+  "description": "Widget for agent side  Cobrowsing",
+  "tags": ["widget", "Agent", "Cobrowsing"],
+  "version": "1.0.0",
+  "id": "1",
+  "element": "<app-agent-co-browse></app-agent-co-browse>",
+  "icon": "neo-icon-sort",
+  "files": [
+    "/elements/agent-cobrowse-angular-widget.js",
+    "/elements/styles.css"
+  ],
+  "override_url": "https://cobrowsing.lab.bravishma.com/"
+}
