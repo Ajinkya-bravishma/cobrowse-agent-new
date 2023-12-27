@@ -18,7 +18,7 @@ import { CobrowseService } from './cobrowse.service';
   imports: [BrowserModule,ReactiveFormsModule,FormsModule,IconModule],
   providers: [CobrowseService],
 
-  bootstrap: [AppComponent],
+  // bootstrap: [AppComponent],
   entryComponents: [AppComponent],
 })
 export class AppModule {

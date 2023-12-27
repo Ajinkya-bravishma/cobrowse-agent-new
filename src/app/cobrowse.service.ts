@@ -10,6 +10,7 @@ export class CobrowseService {
   CobrowseAPI: any;
   agentToken: any = config.jwtToken;
   cobrowseAgent: any;
+  interactionId: any;
   // constructor(private renderer: Renderer2) {}
 
   async loadCobrowseScript() {

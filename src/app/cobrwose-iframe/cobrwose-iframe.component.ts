@@ -167,13 +167,18 @@ export class COBrwoseIframeComponent implements OnInit {
     private formBuilder: FormBuilder,
     private CobrowseService: CobrowseService
   ) {
-    this.interactionId =
-      this.element.nativeElement.getAttribute('interactionid');
+    // this.interactionId =
+    //   this.element.nativeElement.getAttribute('interactionid');
+    this.interactionId = this.CobrowseService.interactionId;
+      console.log("cobrowse iframe interaction id", this.interactionId);
+
     this.widgetAPI = (<any>window)?.WS?.widgetAPI(this.interactionId);
   }
 
   context: any = null;
   async ngOnInit() {
+    this.getData();
+
     await this.CobrowseService.loadCobrowseScript();
 
     // this.CobrowseAPI=(<any>window)?.CobrowseAPI;
@@ -188,7 +193,6 @@ export class COBrwoseIframeComponent implements OnInit {
     // // this.getData();
     // this.finalurl = `${this.url}?token=${this.jwtToken}`;
     // this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.finalurl);
-    this.getData();
     // this.divtxt=true;
 
     //this.urlSafe= "https://www.youtubse.com/";
@@ -285,6 +289,7 @@ export class COBrwoseIframeComponent implements OnInit {
     // this.finalurl = `${this.url}?token=${this.jwtToken}`;
     this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.finalurl);
     console.log(this.finalurl, ' This is the final url ');
+    console.log(this.urlSafe, ' This is the urlSafe ');
     //setTimeout(() => {
 
     // this.http.getJwtToken().subscribe({

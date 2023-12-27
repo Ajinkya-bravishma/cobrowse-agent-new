@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 // import CobrowseAPI from 'cobrowse-agent-sdk';
 import config from '../utils/config';
+import { CobrowseService } from '../cobrowse.service';
 
 @Component({
   selector: 'app-cobrowse-form',
@@ -38,7 +39,7 @@ export class CobrowseFormComponent implements OnInit {
   divtxt: boolean = false;
   url: string = config.cobrowseDashboardUrl;
   isyes!: boolean;
-  urlSafe!: SafeResourceUrl;
+  // urlSafe!: SafeResourceUrl;
   // cobrowse = new CobrowseAPI();
   CobrowseIO: any;
   frameEl = document.getElementById('myIframe');
@@ -51,10 +52,14 @@ export class CobrowseFormComponent implements OnInit {
   constructor(
     public sanitizer: DomSanitizer,
     private element: ElementRef,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private cobrowseService : CobrowseService
   ) {
-    this.interactionId =
-      this.element.nativeElement.getAttribute('interactionid');
+    // this.interactionId =
+    //   this.element.nativeElement.getAttribute('interactionid');
+    this.interactionId = this.cobrowseService.interactionId;
+      console.log("cobrowse form interaction id", this.interactionId);
+      
     this.widgetAPI = (<any>window)?.WS?.widgetAPI(this.interactionId);
   }
   ngOnInit(): void {}
