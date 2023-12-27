@@ -19,7 +19,7 @@ import { CobrowseService } from './cobrowse.service';
   providers: [CobrowseService],
 
   bootstrap: [AppComponent],
-  entryComponents: [AgentShareComponent],
+  entryComponents: [AppComponent],
 })
 export class AppModule {
   // constructor(private injector: Injector) {
@@ -32,7 +32,7 @@ export class AppModule {
   // ngDoBootstrap() {}
 
   constructor(private injector: Injector) {
-    const componentElement = createCustomElement(AgentShareComponent, {
+    const componentElement = createCustomElement(AppComponent, {
       injector,
     });
     customElements.define('app-agent-co-browse', componentElement);

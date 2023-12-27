@@ -167,9 +167,9 @@ export class COBrwoseIframeComponent implements OnInit {
     private formBuilder: FormBuilder,
     private CobrowseService: CobrowseService
   ) {
-    // this.interactionId =
-    //   this.element.nativeElement.getAttribute('interactionid');
-    // this.widgetAPI = (<any>window).WS.widgetAPI(this.interactionId);
+    this.interactionId =
+      this.element.nativeElement.getAttribute('interactionid');
+    this.widgetAPI = (<any>window)?.WS?.widgetAPI(this.interactionId);
   }
 
   context: any = null;
