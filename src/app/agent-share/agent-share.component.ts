@@ -40,7 +40,7 @@ export class AgentShareComponent {
 
   async ngOnInit() {
     await this.CobrowseService.loadCobrowseScript();
-    this.createPresentSession();
+    // this.createPresentSession();
 
     this.CobrowseIO = this.CobrowseService.CobrowseIO;
     this.CobrowseAPI = this.CobrowseService.CobrowseAPI;
@@ -159,24 +159,41 @@ export class AgentShareComponent {
       .setIssuer(this.licenseKey)
       .setSubject('viewer@cobrowse.io')
       .setAudience('https://cobrowse.io')
-      .setExpirationTime('30m') // Choose your own expiration time
+      .setExpirationTime('2h') // Choose your own expiration time
       .sign(privateKey);
 
     return jwt;
   };
 
   startPresentSession = async () => {
-    console.log('cobroio==> ', this.CobrowseIO);
-    console.log('CobrowseAPI==> ', this.CobrowseAPI);
+    this.session = await this.CobrowseService.cobrowseAgent.sessions.create({
+      full_device: 'requested',
+    });
+    this.sessionID = this.session.id;
+    console.log('sessionId:', this.sessionID);
+
+    this.viewerToken = await this.generateViewerJWT(
+      this.licenseKey,
+      this.sessionID
+    );
+
+    this.presentURL = `https://cobrowse.io/session/${this.session.id}?token=${this.viewerToken}&agent_tools=none&device_controls=none&end_action=none&popout=none&session_details=none`;
+
+    console.log('presentURL', this.presentURL);
+    this.suggestionForm.controls['presentURL'].setValue(this.presentURL);
+
     const media = await navigator.mediaDevices.getDisplayMedia({
       video: {
-        // cursor: 'always',
         width: { ideal: 1400 },
         height: { ideal: 1000 },
         frameRate: { max: 10 },
       },
       audio: false,
     });
+
+    media.getVideoTracks()[0].onended = () => {
+      this.resetPresentSession();
+    };
 
     await this.CobrowseIO.client(); // client
 
@@ -218,9 +235,10 @@ export class AgentShareComponent {
     await this.CobrowseIO.stop();
     this.isShareScreen = true;
     this.isEnd = false;
+    this.suggestionForm.controls['presentURL'].setValue('');
 
     // this.isPreview = false
 
-    await this.createPresentSession();
+    // await this.createPresentSession();
   };
 }
