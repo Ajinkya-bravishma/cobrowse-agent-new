@@ -192,23 +192,38 @@
   .agent-session{
     height: 100vh;
   } */
-
 .fk {
   border-radius: 0 !important;
 }
+.cobroIfrmContainer {
+  height: 100%;
+  width: 100%;
+  background: rgb(248 248 248);
+}
+
+.CustomAgentUIExample {
+  width: 100%;
+  height: 100%;
+}
+
+.agent-session {
+  width: 100%;
+  height: 100%;
+}
+
 .CustomAgentUIExample .agent-controls {
   display: flex !important;
   flex-direction: row !important;
   justify-content: center !important;
   align-items: center !important;
-  padding-bottom: 20px !important;
+  /* padding-bottom: 20px !important; */
   /* margin-top: 20px !important; */
 }
 
 .CustomAgentUIExample .btn {
-  padding: 15px 20px;
+  padding: 8px 15px;
   background: rgb(51, 51, 54);
-  font-size: 0.85em;
+  font-size: 0.1em;
   color: white;
   cursor: pointer;
   border-left: 1px solid rgb(70, 70, 73);
@@ -252,6 +267,8 @@
   font-size: 12px !important;
   font-weight: bold !important;
 }
+
+/* 
 .panel {
   background-color: #ffffff;
   width: 80%;
@@ -296,4 +313,4 @@
   overflow: hidden;
   display: none;
   border: 1px solid #ccc;
-}
+} */
