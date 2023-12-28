@@ -39,11 +39,12 @@ export class AgentShareComponent {
   public isEnd: boolean = false;
 
   async ngOnInit() {
-    await this.CobrowseService.loadCobrowseScript();
+    // await this.CobrowseService.loadCobrowseScript();
     // this.createPresentSession();
 
     this.CobrowseIO = this.CobrowseService.CobrowseIO;
     this.CobrowseAPI = this.CobrowseService.CobrowseAPI;
+    this.cobrowseAgent = this.CobrowseService.cobrowseAgent;
 
     // this.CobrowseAPI=(<any>window)?.CobrowseAPI;
     // this.CobrowseIO=(<any>window)?.CobrowseIO;
@@ -114,121 +115,130 @@ export class AgentShareComponent {
 
   //**** agent screen sharing ****//
 
-  createPresentSession = async () => {
-    console.log('wassup');
-    this.session = await this.CobrowseService.cobrowseAgent.sessions.create({
-      full_device: 'requested',
-    });
-    // console.log("session:",this.session);
-    this.sessionID = this.session.id;
-    console.log('sessionId:', this.sessionID);
+  // createPresentSession = async () => {
+  //   console.log('wassup');
+  //   this.session = await this.CobrowseService.cobrowseAgent.sessions.create({
+  //     full_device: 'requested',
+  //   });
+  //   // console.log("session:",this.session);
+  //   this.sessionID = this.session.id;
+  //   console.log('sessionId:', this.sessionID);
 
-    this.viewerToken = await this.generateViewerJWT(
-      this.licenseKey,
-      this.sessionID
-    );
-    // console.log('viewerToken:', this.viewerToken);
-    // Generate the present URL for the session with the viewer token all query parameters to hide agent tools from the viewer
-    this.presentURL = `https://cobrowse.io/session/${this.session.id}?token=${this.viewerToken}&agent_tools=none&device_controls=none&end_action=none&popout=none&session_details=none`;
+  //   this.viewerToken = await this.generateViewerJWT(
+  //     this.licenseKey,
+  //     this.sessionID
+  //   );
+  //   // console.log('viewerToken:', this.viewerToken);
+  //   // Generate the present URL for the session with the viewer token all query parameters to hide agent tools from the viewer
+  //   this.presentURL = `https://cobrowse.io/session/${this.session.id}?token=${this.viewerToken}&agent_tools=none&device_controls=none&end_action=none&popout=none&session_details=none`;
 
-    console.log('presentURL', this.presentURL);
-    this.suggestionForm.controls['presentURL'].setValue(this.presentURL);
-  };
+  //   console.log('presentURL', this.presentURL);
+  //   this.suggestionForm.controls['presentURL'].setValue(this.presentURL);
+  // };
 
   generateViewerJWT = async (licenseKey: any, id: any) => {
-    const alg = 'RS256';
+    try {
+      const alg = 'RS256';
+      const pkcs8 = this.pkcs8;
+      const privateKey = await jose.importPKCS8(pkcs8, alg);
 
-    // WE DO NOT RECOMMEND COMMITING YOUR PRIVATE KEY. THIS IS ONLY FOR DEMO PURPOSES.
-    // Replace with your private key in PKCS8 format
-    const pkcs8 = this.pkcs8;
-
-    const privateKey = await jose.importPKCS8(pkcs8, alg);
-
-    // Generate a viewer JWT token scoped to a single session
-    const jwt = await new jose.SignJWT({
-      displayName: 'Viewer',
-      policy: {
-        version: 2,
-        sessions: {
-          id: id,
+      const jwt = await new jose.SignJWT({
+        displayName: 'Viewer',
+        policy: {
+          version: 2,
+          sessions: {
+            id: id,
+          },
         },
-      },
-    })
-      .setProtectedHeader({ alg })
-      .setIssuedAt()
-      .setIssuer(this.licenseKey)
-      .setSubject('viewer@cobrowse.io')
-      .setAudience('https://cobrowse.io')
-      .setExpirationTime('2h') // Choose your own expiration time
-      .sign(privateKey);
+      })
+        .setProtectedHeader({ alg })
+        .setIssuedAt()
+        .setIssuer(licenseKey)
+        .setSubject('viewer@cobrowse.io')
+        .setAudience('https://cobrowse.io')
+        .setExpirationTime('2h') // Choose your own expiration time
+        .sign(privateKey);
 
-    return jwt;
+      return jwt;
+    } catch (error) {
+      console.log('err==> ', error);
+      throw new Error('Error Generating JWT');
+    }
   };
 
   startPresentSession = async () => {
-    this.session = await this.CobrowseService.cobrowseAgent.sessions.create({
-      full_device: 'requested',
-    });
-    this.sessionID = this.session.id;
-    console.log('sessionId:', this.sessionID);
+    try {
+      console.log('cobrowseApi ', this.CobrowseAPI);
+      console.log('cobrowseIO ', this.CobrowseIO);
+      console.log('cobrowseAgent ', this.cobrowseAgent);
 
-    this.viewerToken = await this.generateViewerJWT(
-      this.licenseKey,
-      this.sessionID
-    );
+      this.session = await this.CobrowseService.cobrowseAgent.sessions.create({
+        full_device: 'requested',
+      });
+      this.sessionID = this.session.id;
+      console.log('sessionId:', this.sessionID);
 
-    this.presentURL = `https://cobrowse.io/session/${this.session.id}?token=${this.viewerToken}&agent_tools=none&device_controls=none&end_action=none&popout=none&session_details=none`;
+      this.viewerToken = await this.generateViewerJWT(
+        this.licenseKey,
+        this.sessionID
+      );
 
-    console.log('presentURL', this.presentURL);
-    this.suggestionForm.controls['presentURL'].setValue(this.presentURL);
+      const media = await navigator.mediaDevices.getDisplayMedia({
+        video: {
+          width: { ideal: 1400 },
+          height: { ideal: 1000 },
+          frameRate: { max: 10 },
+        },
+        audio: false,
+      });
 
-    const media = await navigator.mediaDevices.getDisplayMedia({
-      video: {
-        width: { ideal: 1400 },
-        height: { ideal: 1000 },
-        frameRate: { max: 10 },
-      },
-      audio: false,
-    });
+      this.presentURL = `https://cobrowse.io/session/${this.session.id}?token=${this.viewerToken}&agent_tools=none&device_controls=none&end_action=none&popout=none&session_details=none`;
 
-    media.getVideoTracks()[0].onended = () => {
-      this.resetPresentSession();
-    };
+      console.log('presentURL', this.presentURL);
+      this.suggestionForm.controls['presentURL'].setValue(this.presentURL);
 
-    await this.CobrowseIO.client(); // client
+      media.getVideoTracks()[0].onended = () => {
+        this.resetPresentSession();
+      };
 
-    this.CobrowseIO.license = this.licenseKey;
-    this.CobrowseIO.redactedViews = ['.container'];
-    this.CobrowseIO.capabilities = ['full_device'];
-    this.CobrowseIO.showSessionControls = () => {};
-    this.CobrowseIO.hideSessionControls = () => {};
-    this.CobrowseIO.confirmSession = async () => true;
-    this.CobrowseIO.confirmFullDevice = async () => media;
-    this.CobrowseIO.confirmRemoteControl = async () => false;
+      await this.CobrowseIO.client(); // client
 
-    this.CobrowseIO.on('session.updated', (presentSession: any) => {
-      if (presentSession.isActive()) {
-        this.isShareScreen = false;
-        this.isEnd = true;
+      this.CobrowseIO.license = this.licenseKey;
+      this.CobrowseIO.redactedViews = ['.container'];
+      this.CobrowseIO.capabilities = ['full_device'];
+      this.CobrowseIO.showSessionControls = () => {};
+      this.CobrowseIO.hideSessionControls = () => {};
+      this.CobrowseIO.confirmSession = async () => true;
+      this.CobrowseIO.confirmFullDevice = async () => media;
+      this.CobrowseIO.confirmRemoteControl = async () => false;
 
-        if (!presentSession.fullDevice()) {
-          this.session.end();
+      this.CobrowseIO.on('session.updated', (presentSession: any) => {
+        if (presentSession.isActive()) {
+          this.isShareScreen = false;
+          this.isEnd = true;
+
+          if (!presentSession.fullDevice()) {
+            this.session.end();
+          }
         }
-      }
-    });
+      });
 
-    this.CobrowseIO.on('session.ended', async (presentSession: any) => {
-      if (media) media.getTracks().forEach((track) => track.stop());
-      this.resetPresentSession();
-    });
+      this.CobrowseIO.on('session.ended', async (presentSession: any) => {
+        if (media) media.getTracks().forEach((track) => track.stop());
+        this.resetPresentSession();
+      });
 
-    await this.CobrowseIO.start({
-      allowIFrameStart: true,
-      register: false,
-    });
+      await this.CobrowseIO.start({
+        allowIFrameStart: true,
+        register: false,
+      });
 
-    // Use the Client SDK to join the session
-    await this.CobrowseIO.getSession(this.session.id);
+      // Use the Client SDK to join the session
+      await this.CobrowseIO.getSession(this.session.id);
+    } catch (error) {
+      console.log('Error starting cobrowse agent present', error);
+      throw new Error('Error starting cobrowse agent present');
+    }
   };
 
   resetPresentSession = async () => {

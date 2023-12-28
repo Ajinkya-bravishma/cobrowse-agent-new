@@ -131,12 +131,7 @@ import { CobrowseService } from '../cobrowse.service';
 export class COBrwoseIframeComponent implements OnInit {
   @ViewChild('myIframe') iframe!: ElementRef;
 
-  ngAfterViewInit() {
-    // const iframeElement: HTMLIFrameElement = this.iframe.nativeElement;
-    // console.log('iframe content  ::', this.iframe.nativeElement);
-    // // Call a function on the iframe element
-    // // iframeElement.contentWindow.postMessage('Hello from parent', '*');
-  }
+  
   @Input()
   public widgetAPI: any;
   public interactionId!: string;
@@ -179,13 +174,11 @@ export class COBrwoseIframeComponent implements OnInit {
   async ngOnInit() {
     this.getData();
 
-    await this.CobrowseService.loadCobrowseScript();
+    // await this.CobrowseService.loadCobrowseScript();
 
     // this.CobrowseAPI=(<any>window)?.CobrowseAPI;
 
-    this.CobrowseIO = this.CobrowseService.CobrowseIO;
-    this.CobrowseAPI = this.CobrowseService.CobrowseAPI;
-    this.cobrowse = new this.CobrowseAPI();
+    
 
     // this.generateViewerJWT(this.licenseKey,this.sessionID);
     console.log('called');
@@ -205,9 +198,21 @@ export class COBrwoseIframeComponent implements OnInit {
     //alert(this.urlSafe+'Load Event');
     // setTimeout(() => {
     // setInterval(() => {
+    //   console.log("this.iframe ", this.iframe);
+    //   this.frameEl = document.getElementById('myIframe');
+    //   console.log("this.frameEl ", this.frameEl);
+
+    // console.log('this.iframe.nativeElement', this.iframe.nativeElement);
+    // this.onIframeRef(this.iframe.nativeElement);
+    // }, 1000);
+  }
+
+  async ngAfterViewInit() {
+    this.CobrowseIO = this.CobrowseService.CobrowseIO;
+    this.CobrowseAPI = this.CobrowseService.CobrowseAPI;
+    this.cobrowse = this.CobrowseService.cobrowseAgent;
     console.log('this.iframe.nativeElement', this.iframe.nativeElement);
     this.onIframeRef(this.iframe.nativeElement);
-    // }, 1000);
   }
 
   async onIframeRef(iframe: any) {
