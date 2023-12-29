@@ -147,7 +147,6 @@ export class COBrwoseIframeComponent implements OnInit {
   // cobrowse = new CobrowseAPI();
   cobrowse: any;
   CobrowseAPI: any;
-  CobrowseIO: any;
   frameEl = document.getElementById('myIframe');
   session: any;
   screenInfo: any;
@@ -181,7 +180,6 @@ export class COBrwoseIframeComponent implements OnInit {
     
 
     // this.generateViewerJWT(this.licenseKey,this.sessionID);
-    console.log('called');
 
     // // this.getData();
     // this.finalurl = `${this.url}?token=${this.jwtToken}`;
@@ -208,7 +206,6 @@ export class COBrwoseIframeComponent implements OnInit {
   }
 
   async ngAfterViewInit() {
-    this.CobrowseIO = this.CobrowseService.CobrowseIO;
     this.CobrowseAPI = this.CobrowseService.CobrowseAPI;
     this.cobrowse = this.CobrowseService.cobrowseAgent;
     console.log('this.iframe.nativeElement', this.iframe.nativeElement);

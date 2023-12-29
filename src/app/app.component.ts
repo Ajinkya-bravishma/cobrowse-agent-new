@@ -23,12 +23,13 @@ export class AppComponent implements OnInit {
     this.cobrowseService.interactionId = this.interactionId;
     this.widgetAPI = (<any>window)?.WS?.widgetAPI(this.interactionId);
     console.log('cobrowse app comp widgetAPI ', this.widgetAPI);
-    
   }
   async ngOnInit() {
-    await this.cobrowseService.loadCobrowseScript().then((suc) => {
-      this.scriptLoaded = true;
-    });
+    await this.cobrowseService
+      .loadCobrowseScript(<any>window, 'script', 'CobrowseIO', null, null, null)
+      .then((suc) => {
+        this.scriptLoaded = true;
+        console.log('promise return ', suc);
+      });
   }
-  
 }

@@ -24,6 +24,7 @@ export class AgentShareComponent {
   suggestionForm!: FormGroup;
   viewerToken: any;
   presentURL: any;
+  cobrowseClient: any;
 
   sessionID: any;
   //adding for agent preview
@@ -42,7 +43,7 @@ export class AgentShareComponent {
     // await this.CobrowseService.loadCobrowseScript();
     // this.createPresentSession();
 
-    this.CobrowseIO = this.CobrowseService.CobrowseIO;
+    this.CobrowseIO = (<any>window)?.CobrowseIO;
     this.CobrowseAPI = this.CobrowseService.CobrowseAPI;
     this.cobrowseAgent = this.CobrowseService.cobrowseAgent;
 
@@ -201,18 +202,18 @@ export class AgentShareComponent {
         this.resetPresentSession();
       };
 
-      await this.CobrowseIO.client(); // client
+      this.cobrowseClient = await this.CobrowseIO.client(); // client
 
-      this.CobrowseIO.license = this.licenseKey;
-      this.CobrowseIO.redactedViews = ['.container'];
-      this.CobrowseIO.capabilities = ['full_device'];
-      this.CobrowseIO.showSessionControls = () => {};
-      this.CobrowseIO.hideSessionControls = () => {};
-      this.CobrowseIO.confirmSession = async () => true;
-      this.CobrowseIO.confirmFullDevice = async () => media;
-      this.CobrowseIO.confirmRemoteControl = async () => false;
+      this.cobrowseClient.license = this.licenseKey;
+      this.cobrowseClient.redactedViews = ['.container'];
+      this.cobrowseClient.capabilities = ['full_device'];
+      this.cobrowseClient.showSessionControls = () => {};
+      this.cobrowseClient.hideSessionControls = () => {};
+      this.cobrowseClient.confirmSession = async () => true;
+      this.cobrowseClient.confirmFullDevice = async () => media;
+      this.cobrowseClient.confirmRemoteControl = async () => false;
 
-      this.CobrowseIO.on('session.updated', (presentSession: any) => {
+      this.cobrowseClient.on('session.updated', (presentSession: any) => {
         if (presentSession.isActive()) {
           this.isShareScreen = false;
           this.isEnd = true;
@@ -223,18 +224,18 @@ export class AgentShareComponent {
         }
       });
 
-      this.CobrowseIO.on('session.ended', async (presentSession: any) => {
+      this.cobrowseClient.on('session.ended', async (presentSession: any) => {
         if (media) media.getTracks().forEach((track) => track.stop());
         this.resetPresentSession();
       });
 
-      await this.CobrowseIO.start({
+      await this.cobrowseClient.start({
         allowIFrameStart: true,
         register: false,
       });
 
       // Use the Client SDK to join the session
-      await this.CobrowseIO.getSession(this.session.id);
+      await this.cobrowseClient.getSession(this.session.id);
     } catch (error) {
       console.log('Error starting cobrowse agent present', error);
       throw new Error('Error starting cobrowse agent present');
@@ -242,7 +243,7 @@ export class AgentShareComponent {
   };
 
   resetPresentSession = async () => {
-    await this.CobrowseIO.stop();
+    await this.cobrowseClient.stop();
     this.isShareScreen = true;
     this.isEnd = false;
     this.suggestionForm.controls['presentURL'].setValue('');
