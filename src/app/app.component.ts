@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { CobrowseService } from './cobrowse.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { CobrowseService } from './cobrowse.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'cobrowse';
   interactionId: any;
   widgetAPI: any;
@@ -23,8 +23,12 @@ export class AppComponent {
     this.cobrowseService.interactionId = this.interactionId;
     this.widgetAPI = (<any>window)?.WS?.widgetAPI(this.interactionId);
     console.log('cobrowse app comp widgetAPI ', this.widgetAPI);
-    this.cobrowseService.loadCobrowseScript().then((suc) => {
+    
+  }
+  async ngOnInit() {
+    await this.cobrowseService.loadCobrowseScript().then((suc) => {
       this.scriptLoaded = true;
     });
   }
+  
 }
